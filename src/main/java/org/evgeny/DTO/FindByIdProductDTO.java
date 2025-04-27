@@ -1,4 +1,4 @@
-package org.evgeny.Model;
+package org.evgeny.DTO;
 
 
 import lombok.Builder;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Builder
 @Data
-public class Product {
+public class FindByIdProductDTO {
     private Integer id;
     private String description;
     private BigDecimal price;
