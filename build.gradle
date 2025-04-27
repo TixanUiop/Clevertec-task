@@ -1,7 +1,11 @@
 plugins {
     id 'java'
+    id 'application' // Плагин для запуска приложения
 }
 
+application {
+    mainClass = 'org.evgeny.Runner'  // Замените на свой основной класс
+}
 group = 'org.evgeny'
 version = '1.0-SNAPSHOT'
 

@@ -3,6 +3,9 @@ package org.evgeny;
 import lombok.extern.slf4j.Slf4j;
 import org.evgeny.Model.Product;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -28,14 +31,15 @@ public class Runner {
     private static List<Long> cards;
 
 
-    private static Map<Long, Integer> resultProducts = new HashMap<>();
+    private static Map<Long, Integer> resultProductsHash = new HashMap<>();
+
     private static Optional<String> card;
 
     public static void main(String[] args) {
 
         //String atg = args.toString();
         //System.out.println(atg);
-        String test = "3-3 2-10 4-55 card-1233";
+        String test = "2-10 2-15 4-3 card-1233";
 
         Pattern pattern = Pattern.compile(REGEX_PARAM);
         Matcher matcher = pattern.matcher(test);
@@ -44,13 +48,13 @@ public class Runner {
             if (matcher.group(1) != null && matcher.group(2) != null) {
                 Long productId = Long.parseLong(matcher.group(1));
                 Integer quantity = Integer.parseInt(matcher.group(2));
-                resultProducts.put(productId, quantity);
+                resultProductsHash.put(productId, quantity);
             }
             else if (matcher.group(3) != null) {
                 card = Optional.of(matcher.group(3));
             }
         }
-        if (resultProducts.isEmpty()) {
+        if (resultProductsHash.isEmpty()) {
             log.info("No products found");
             System.out.println("No products found");
         }
@@ -59,21 +63,51 @@ public class Runner {
         printReceipt(findProducts());
     }
 
-    private static void printReceipt(List<Product> products)
+    private static void printReceipt(Map<Long, Product> products)
     {
-        for (Product product : products) {
 
+        System.out.println("CASH RECEIPT");
+        System.out.println("SUPERMARKET 123");
+        System.out.println("12, MILKWAY Galaxy/ Earth");
+        System.out.println("tel : 123-456-789");
+        System.out.println("CASHIER: #1520          DATE: " + LocalDate.now());
+        System.out.println("                        TIME: " + LocalTime.now());
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println(String.format("%-10s %-30s %-10s %-10s", "Кол-во", "Название", "Цена", "Итоговая стоимость"));
+        System.out.println("------------------------------------------------------------------------");
+        double totalPrice = 0.0;
+        for (Map.Entry<Long, Product> entry : products.entrySet()) {
+
+            double itemTotalPrice = entry.getValue().getSalePrice() * entry.getKey();
+
+            System.out.println(String.format("%-10d %-30s %-10.2f %-10.2f",
+                    entry.getKey(),
+                    entry.getValue().getName(),
+                    entry.getKey() > 5
+                            ? entry.getValue().getSalePrice() - (entry.getValue().getSalePrice() / 100) * 10
+                            : entry.getValue().getSalePrice(),
+                    itemTotalPrice));
+
+            totalPrice += itemTotalPrice;
         }
+
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("TOTAL: " + totalPrice);
+
     }
 
 
-    private static List<Product> findProducts() {
-        List<Product> findProduct = new ArrayList<>();
-        products.stream()
-                .filter(x -> resultProducts.containsKey(x.getId()))
-                .forEach(x -> findProduct.add(x));
+    private static Map<Long, Product>  findProducts() {
+        Map<Long, Product> resultProductsAndQuantity = new HashMap<>();
 
-        return findProduct;
+        products.stream()
+                .filter(x -> resultProductsHash.containsKey(x.getId()))
+                .forEach(x -> {
+                    Integer quantity = resultProductsHash.get(x.getId());
+                    resultProductsAndQuantity.put(quantity.longValue(), x);
+                });
+
+        return resultProductsAndQuantity;
     }
 
 
@@ -94,7 +128,7 @@ public class Runner {
     private static void initArrayProducts() {
         products.add(new Product(1L, "Беспроводные наушники с шумоподавлением WH-1000XM4", 320.50, 320.50));
         products.add(new Product(2L, "Умные часы Apple Watch Series 7", 449.99,449.99));
-        products.add(new Product(3L, "Ноутбук Apple MacBook Pro 16''", 2399.00, 2399.00));
+        products.add(new Product(3L, "Ноутбук Apple MacBook Pro 16", 2399.00, 2399.00));
         products.add(new Product(4L, "Смартфон Samsung Galaxy S21", 899.00, 899.00));
         products.add(new Product(5L, "Электрическая зубная щетка Philips Sonicare", 99.99, 99.99));
         products.add(new Product(6L, "Планшет Samsung Galaxy Tab S7", 649.00, 600.00));
