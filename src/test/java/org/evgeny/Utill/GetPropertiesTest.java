@@ -10,9 +10,9 @@ class GetPropertiesTest {
 
     @ParameterizedTest
     @CsvSource({
-            "db.url, jdbc:postgresql://localhost:5432/clevertec_repository",
-            "db.username, postgres",
-            "db.password, postgres"
+            "db.url, jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1",
+            "db.username, sa"
+            //"db.password, null"
     })
     void getProperties(String key, String value) {
         assertEquals(value, GetProperties.getProperties(key));

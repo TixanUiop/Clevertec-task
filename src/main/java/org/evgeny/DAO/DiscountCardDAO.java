@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class DiscountCardDAO implements DAO<DiscountCardDAO, Integer> {
 
     @Getter

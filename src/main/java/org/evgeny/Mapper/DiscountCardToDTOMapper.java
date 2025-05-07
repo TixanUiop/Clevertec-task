@@ -10,11 +10,10 @@ import org.evgeny.Model.DiscountCard;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DiscountCardToDTOMapper implements Mapper<DiscountCard, FindByCardDTO>{
+public class DiscountCardToDTOMapper implements Mapper<DiscountCard, FindByCardDTO> {
 
     @Getter
     private static final DiscountCardToDTOMapper INSTANCE = new DiscountCardToDTOMapper();
-
 
     @Override
     @SneakyThrows

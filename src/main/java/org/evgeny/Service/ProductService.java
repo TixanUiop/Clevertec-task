@@ -17,13 +17,15 @@ import java.util.Optional;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductService {
-    @Getter
-    private final static ProductService INSTANCE = new ProductService();
-    private final static ProductDAO productDAO = ProductDAO.getINSTANCE();
-    private final ProductDAOToDTOMapper mapper = ProductDAOToDTOMapper.getINSTANCE();
 
+    private ProductDAO productDAO;
+    private ProductDAOToDTOMapper mapper;
+
+    public ProductService(ProductDAO productDAO, ProductDAOToDTOMapper mapper) {
+        this.productDAO = productDAO;
+        this.mapper = mapper;
+    }
     public FindByIdProductDTO findById(Integer id) {
-
         try {
             Optional<Product> product = productDAO.findById(id);
             if (product.isPresent()) {
@@ -38,8 +40,5 @@ public class ProductService {
             log.error("Failed to retrieve product by id: {}", id, e);
             throw new ExceptionService(e.getMessage());
         }
-
     }
-
-
 }

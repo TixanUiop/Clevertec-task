@@ -15,16 +15,21 @@ import java.util.Optional;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DiscountCardService {
-    @Getter
-    private static final DiscountCardService INSTANCE = new DiscountCardService();
-    private static final DiscountCardDAO DiscountCardRepository = DiscountCardDAO.getINSTANCE();
-    private static final DiscountCardToDTOMapper DiscountCardToDTOMapper = org.evgeny.Mapper.DiscountCardToDTOMapper.getINSTANCE();
 
+
+    private DiscountCardDAO discountCardRepository;
+    private DiscountCardToDTOMapper discountCardToDTOMapper;
+
+    public DiscountCardService(DiscountCardDAO discountCardRepository, DiscountCardToDTOMapper discountCardToDTOMapper) {
+        this.discountCardRepository = discountCardRepository;
+        this.discountCardToDTOMapper = discountCardToDTOMapper;
+    }
 
     public Optional<FindByCardDTO> findByCardCode(String cardCode) {
-        Optional<DiscountCard> byCardCode = DiscountCardRepository.findByCardCode(cardCode);
+        Optional<DiscountCard> byCardCode = discountCardRepository.findByCardCode(cardCode);
+
         if (byCardCode.isPresent()) {
-            FindByCardDTO map = DiscountCardToDTOMapper.map(byCardCode.get());
+            FindByCardDTO map = discountCardToDTOMapper.map(byCardCode.get());
             return Optional.of(map);
         }
         else {
