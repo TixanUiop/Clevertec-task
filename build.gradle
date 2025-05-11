@@ -8,11 +8,37 @@ application {
 }
 
 group = 'org.evgeny'
-version = '1.0-SNAPSHOT'
+version = '1.0-FINAL_CONSOLE_APP_POSTGRES'
 mainClassName = 'org.evgeny.Runner'
 
 repositories {
     mavenCentral()
+}
+
+tasks.register('cleanAndBuild') {
+    group = 'custom'
+    description = 'Очищает проект и собирает заново'
+
+    dependsOn('clean', 'build')
+}
+
+tasks.register('replaceJarToResources', Copy) {
+    group = 'custom'
+    description = 'Переносит jar-ку в пакет Resources'
+
+    def jarFile = file("${buildDir}/libs/${rootProject.name}-${version}.jar")
+    def targetDir = file("$rootDir/src/main/resources/final-jars")
+
+    from(jarFile)
+    into(targetDir)
+
+    doFirst {
+        if (!jarFile.exists()) {
+            throw new GradleException("JAR-файл не найден: ${jarFile}")
+        }
+        println "Копируем ${jarFile.name} в ${targetDir}"
+    }
+
 }
 
 dependencies {
@@ -25,14 +51,12 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.4'
     testImplementation 'com.h2database:h2:2.2.224'
 
-    // логирование
     implementation 'org.slf4j:slf4j-api:1.7.36'
     implementation 'ch.qos.logback:logback-classic:1.2.11'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.32'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 
-    //Mockito
     testImplementation("org.mockito:mockito-core:2.1.0")
     testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 
