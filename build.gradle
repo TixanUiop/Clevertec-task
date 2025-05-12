@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.evgeny'
-version = '2.0-SNAPSHOT'
+version = '2.0-FINAL_WEB_APP'
 
 repositories {
     mavenCentral()
@@ -31,6 +31,25 @@ tasks.register('replaceJarToResources', Copy) {
     doFirst {
         if (!jarFile.exists()) {
             throw new GradleException("JAR-файл не найден: ${jarFile}")
+        }
+        println "Копируем ${jarFile.name} в ${targetDir}"
+    }
+
+}
+
+tasks.register('replaceWarToResources', Copy) {
+    group = 'custom'
+    description = 'Переносит war-ку в пакет Resources'
+
+    def jarFile = file("${buildDir}/libs/${rootProject.name}-${version}.war")
+    def targetDir = file("$rootDir/src/main/resources/final-jars-or-wars")
+
+    from(jarFile)
+    into(targetDir)
+
+    doFirst {
+        if (!jarFile.exists()) {
+            throw new GradleException("WAR-файл не найден: ${jarFile}")
         }
         println "Копируем ${jarFile.name} в ${targetDir}"
     }
@@ -79,16 +98,16 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-//war {
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    from {
-//        configurations.runtimeClasspath.findAll {
-//            it.name.endsWith('jar')
-//        }
-//    } {
-//        into 'WEB-INF/lib'
-//    }
-//}
+war {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.findAll {
+            it.name.endsWith('jar')
+        }
+    } {
+        into 'WEB-INF/lib'
+    }
+}
 
 test {
     useJUnitPlatform()

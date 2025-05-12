@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-//http://localhost:8080/check?itemId=1&quantity=2&itemId=3&quantity=5&itemId=7&quantity=1
+//http://localhost:8080/check?itemId=1&quantity=2&itemId=3&quantity=5&itemId=7&quantity=1&card=1000
 
 @Slf4j
 @WebServlet("/check")
