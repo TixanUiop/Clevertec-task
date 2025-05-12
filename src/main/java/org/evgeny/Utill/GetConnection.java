@@ -23,6 +23,7 @@ public class GetConnection {
     void loadDriver() {
         try {
             GetConnection.class.getClassLoader().loadClass("org.postgresql.Driver");
+            Class.forName("org.postgresql.Driver");
             log.info("Loaded PostgreSQL Driver");
         }
         catch (ClassNotFoundException e) {

@@ -7,7 +7,6 @@ import org.evgeny.DTO.FindByCardDTO;
 import org.evgeny.DTO.FindByIdProductDTO;
 import org.evgeny.Mapper.DiscountCardToDTOMapper;
 import org.evgeny.Mapper.ProductDAOToDTOMapper;
-import org.evgeny.Model.Product;
 import org.evgeny.Service.DiscountCardService;
 import org.evgeny.Service.ProductService;
 import org.evgeny.Utill.Printer;
