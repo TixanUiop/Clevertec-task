@@ -1,18 +1,14 @@
 plugins {
     id 'java'
-    id 'application'
-}
-
-application {
-    mainClass = 'org.evgeny.Runner'
+    id 'war'
 }
 
 group = 'org.evgeny'
-version = '1.0-FINAL_CONSOLE_APP_POSTGRES'
-mainClassName = 'org.evgeny.Runner'
+version = '2.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+
 }
 
 tasks.register('cleanAndBuild') {
@@ -60,6 +56,10 @@ dependencies {
     testImplementation("org.mockito:mockito-core:2.1.0")
     testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 
+
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+
+
 }
 
 jar {
@@ -79,9 +79,17 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-application {
-    mainClassName = 'org.evgeny.Runner'
-}
+//war {
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//    from {
+//        configurations.runtimeClasspath.findAll {
+//            it.name.endsWith('jar')
+//        }
+//    } {
+//        into 'WEB-INF/lib'
+//    }
+//}
+
 test {
     useJUnitPlatform()
 }
