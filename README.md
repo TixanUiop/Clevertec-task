@@ -1,7 +1,7 @@
 # 🧾 Clevertec Task
 
 🔖 **Автор:** Evgeny  
-📄 [Тестовое задание (PDF)](docs/specification.pdf)
+📄 [Тестовое задание (PDF)](docs/Тестовое задание Backend Dev Course.pdf)
 
 ---
 
